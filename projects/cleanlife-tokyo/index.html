@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クリーンライフ東京 | プロのハウスクリーニング</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0ea5e9',
+                        'primary-dark': '#0284c7',
+                        'primary-light': '#e0f2fe',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .accordion-content.open {
+            max-height: 200px;
+        }
+
+        .flow-line {
+            background: linear-gradient(90deg, #0ea5e9 0%, #0ea5e9 100%);
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800 antialiased">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm z-50 border-b border-gray-100">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="#" class="text-xl font-bold text-primary">
+                🏠 クリーンライフ東京
+            </a>
+            <nav class="hidden md:flex items-center gap-8 text-sm">
+                <a href="#services" class="text-gray-600 hover:text-primary transition-colors">サービス</a>
+                <a href="#price" class="text-gray-600 hover:text-primary transition-colors">料金</a>
+                <a href="#flow" class="text-gray-600 hover:text-primary transition-colors">ご利用の流れ</a>
+                <a href="#faq" class="text-gray-600 hover:text-primary transition-colors">よくある質問</a>
+            </nav>
+            <a href="#contact" class="bg-primary text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-primary-dark transition-colors">
+                お問い合わせ
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 md:pt-40 md:pb-32 px-4">
+        <div class="max-w-4xl mx-auto text-center fade-in">
+            <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-gray-900">
+                プロの清掃で、<br class="md:hidden">毎日をもっと快適に
+            </h1>
+            <p class="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+                忙しい毎日、お掃除のストレスから解放されませんか？<br>
+                経験豊富なスタッフが、あなたのお部屋を<br class="hidden md:inline">ピカピカに仕上げます。
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#contact" class="w-full sm:w-auto bg-primary text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-primary-dark transition-all hover:shadow-lg hover:shadow-primary/30 transform hover:-translate-y-0.5">
+                    無料見積もりを依頼
+                </a>
+                <a href="tel:0120-000-000" class="w-full sm:w-auto border-2 border-gray-200 text-gray-700 px-8 py-4 rounded-full text-lg font-medium hover:border-primary hover:text-primary transition-colors">
+                    📞 0120-XXX-XXX
+                </a>
+            </div>
+            <p class="mt-6 text-sm text-gray-500">✓ 見積もり無料 ✓ 最短翌日対応 ✓ 追加料金なし</p>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <p class="text-primary font-medium mb-2">SERVICES</p>
+                <h2 class="text-3xl md:text-4xl font-bold">サービス内容</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group">
+                    <div class="w-16 h-16 bg-primary-light rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+                        🧹
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">定期清掃</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        週1回〜月1回まで、ご希望のペースでお伺い。キッチン、バスルーム、トイレなど水回りを中心に、いつでも清潔なお部屋を維持します。
+                    </p>
+                    <a href="#contact" class="inline-flex items-center mt-4 text-primary font-medium hover:gap-2 transition-all">
+                        詳しく見る <span class="ml-1">→</span>
+                    </a>
+                </div>
+                <!-- Service Card 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group">
+                    <div class="w-16 h-16 bg-primary-light rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+                        📦
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">引越し清掃</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        入居前・退去後のお部屋をすみずみまでクリーニング。敷金返還にも効果的。新生活を気持ちよくスタートできます。
+                    </p>
+                    <a href="#contact" class="inline-flex items-center mt-4 text-primary font-medium hover:gap-2 transition-all">
+                        詳しく見る <span class="ml-1">→</span>
+                    </a>
+                </div>
+                <!-- Service Card 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group">
+                    <div class="w-16 h-16 bg-primary-light rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+                        ❄️
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">エアコンクリーニング</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        分解洗浄で内部のカビ・ホコリを徹底除去。電気代の節約にもつながり、きれいな空気で快適に過ごせます。
+                    </p>
+                    <a href="#contact" class="inline-flex items-center mt-4 text-primary font-medium hover:gap-2 transition-all">
+                        詳しく見る <span class="ml-1">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="py-20">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <p class="text-primary font-medium mb-2">WHY CHOOSE US</p>
+                <h2 class="text-3xl md:text-4xl font-bold">選ばれる理由</h2>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center group">
+                    <div class="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center text-2xl mx-auto mb-4 group-hover:scale-110 transition-transform">
+                        👨‍🔧
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">経験豊富なスタッフ</h3>
+                    <p class="text-gray-600 text-sm">平均勤続5年以上のベテランスタッフが対応いたします</p>
+                </div>
+                <div class="text-center group">
+                    <div class="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center text-2xl mx-auto mb-4 group-hover:scale-110 transition-transform">
+                        💴
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">安心の料金体系</h3>
+                    <p class="text-gray-600 text-sm">明瞭な料金設定で追加料金は一切ありません</p>
+                </div>
+                <div class="text-center group">
+                    <div class="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center text-2xl mx-auto mb-4 group-hover:scale-110 transition-transform">
+                        ⚡
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">最短翌日対応</h3>
+                    <p class="text-gray-600 text-sm">急なご依頼にも柔軟に対応いたします</p>
+                </div>
+                <div class="text-center group">
+                    <div class="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center text-2xl mx-auto mb-4 group-hover:scale-110 transition-transform">
+                        ✨
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">満足保証</h3>
+                    <p class="text-gray-600 text-sm">仕上がりにご満足いただけない場合は無料で再対応</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Price Section -->
+    <section id="price" class="py-20 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <p class="text-primary font-medium mb-2">PRICE</p>
+                <h2 class="text-3xl md:text-4xl font-bold">料金プラン</h2>
+                <p class="text-gray-600 mt-4">シンプルでわかりやすい料金体系</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Price Tier 1 -->
+                <div class="bg-white rounded-2xl p-8 text-center shadow-sm hover:shadow-lg transition-shadow">
+                    <h3 class="text-lg font-bold text-gray-600 mb-2">1R / 1K</h3>
+                    <div class="mb-4">
+                        <span class="text-4xl font-bold text-gray-900">¥8,800</span>
+                        <span class="text-gray-500">〜</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-6">約1.5〜2時間</p>
+                    <ul class="text-sm text-gray-600 space-y-2 mb-6">
+                        <li>✓ キッチン清掃</li>
+                        <li>✓ バスルーム清掃</li>
+                        <li>✓ トイレ清掃</li>
+                        <li>✓ 床掃除機がけ</li>
+                    </ul>
+                    <a href="#contact" class="block w-full py-3 border-2 border-primary text-primary rounded-full font-medium hover:bg-primary hover:text-white transition-colors">
+                        見積もり依頼
+                    </a>
+                </div>
+                <!-- Price Tier 2 -->
+                <div class="bg-white rounded-2xl p-8 text-center shadow-lg ring-2 ring-primary relative transform md:-translate-y-4">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-white text-sm px-4 py-1 rounded-full">
+                        人気No.1
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-600 mb-2">2LDK</h3>
+                    <div class="mb-4">
+                        <span class="text-4xl font-bold text-primary">¥15,800</span>
+                        <span class="text-gray-500">〜</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-6">約2.5〜3時間</p>
+                    <ul class="text-sm text-gray-600 space-y-2 mb-6">
+                        <li>✓ 全水回り清掃</li>
+                        <li>✓ 全居室清掃</li>
+                        <li>✓ 窓拭き（内側）</li>
+                        <li>✓ ベランダ清掃</li>
+                    </ul>
+                    <a href="#contact" class="block w-full py-3 bg-primary text-white rounded-full font-medium hover:bg-primary-dark transition-colors">
+                        見積もり依頼
+                    </a>
+                </div>
+                <!-- Price Tier 3 -->
+                <div class="bg-white rounded-2xl p-8 text-center shadow-sm hover:shadow-lg transition-shadow">
+                    <h3 class="text-lg font-bold text-gray-600 mb-2">3LDK以上</h3>
+                    <div class="mb-4">
+                        <span class="text-4xl font-bold text-gray-900">¥22,800</span>
+                        <span class="text-gray-500">〜</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-6">約3.5〜4時間</p>
+                    <ul class="text-sm text-gray-600 space-y-2 mb-6">
+                        <li>✓ 全水回り清掃</li>
+                        <li>✓ 全居室清掃</li>
+                        <li>✓ 窓拭き（内側）</li>
+                        <li>✓ 収納内清掃</li>
+                    </ul>
+                    <a href="#contact" class="block w-full py-3 border-2 border-primary text-primary rounded-full font-medium hover:bg-primary hover:text-white transition-colors">
+                        見積もり依頼
+                    </a>
+                </div>
+            </div>
+            <p class="text-center text-sm text-gray-500 mt-8">※ 料金は税込です。汚れ具合や間取りにより変動する場合があります。</p>
+        </div>
+    </section>
+
+    <!-- Flow Section -->
+    <section id="flow" class="py-20">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <p class="text-primary font-medium mb-2">FLOW</p>
+                <h2 class="text-3xl md:text-4xl font-bold">ご利用の流れ</h2>
+            </div>
+            <div class="relative">
+                <!-- Flow Line (Desktop) -->
+                <div class="hidden md:block absolute top-12 left-[12%] right-[12%] h-1 bg-primary-light rounded-full">
+                    <div class="absolute inset-0 bg-primary rounded-full" style="width: 100%;"></div>
+                </div>
+                <div class="grid md:grid-cols-4 gap-8 relative">
+                    <!-- Step 1 -->
+                    <div class="text-center">
+                        <div class="w-24 h-24 bg-primary text-white rounded-full flex items-center justify-center text-3xl mx-auto mb-4 relative z-10">
+                            📞
+                        </div>
+                        <div class="text-primary font-bold text-sm mb-1">STEP 1</div>
+                        <h3 class="font-bold mb-2">お問い合わせ</h3>
+                        <p class="text-sm text-gray-600">電話またはフォームからお気軽にご連絡ください</p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="text-center">
+                        <div class="w-24 h-24 bg-primary text-white rounded-full flex items-center justify-center text-3xl mx-auto mb-4 relative z-10">
+                            📋
+                        </div>
+                        <div class="text-primary font-bold text-sm mb-1">STEP 2</div>
+                        <h3 class="font-bold mb-2">お見積り</h3>
+                        <p class="text-sm text-gray-600">ご要望をヒアリングし無料でお見積りをご提示</p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="text-center">
+                        <div class="w-24 h-24 bg-primary text-white rounded-full flex items-center justify-center text-3xl mx-auto mb-4 relative z-10">
+                            📅
+                        </div>
+                        <div class="text-primary font-bold text-sm mb-1">STEP 3</div>
+                        <h3 class="font-bold mb-2">作業日確定</h3>
+                        <p class="text-sm text-gray-600">ご都合の良い日時で作業日を決定します</p>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="text-center">
+                        <div class="w-24 h-24 bg-primary text-white rounded-full flex items-center justify-center text-3xl mx-auto mb-4 relative z-10">
+                            ✨
+                        </div>
+                        <div class="text-primary font-bold text-sm mb-1">STEP 4</div>
+                        <h3 class="font-bold mb-2">清掃実施</h3>
+                        <p class="text-sm text-gray-600">プロのスタッフがお部屋をピカピカに仕上げます</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <p class="text-primary font-medium mb-2">VOICE</p>
+                <h2 class="text-3xl md:text-4xl font-bold">お客様の声</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm">
+                    <div class="flex items-center gap-1 text-yellow-400 mb-4">
+                        ★★★★★
+                    </div>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        「共働きで掃除の時間がなく困っていましたが、定期清掃を頼んでから毎日快適です。スタッフの方も丁寧で安心してお任せできます。」
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-primary-light rounded-full flex items-center justify-center text-primary font-bold">
+                            Y.S
+                        </div>
+                        <div>
+                            <p class="font-medium">佐藤様</p>
+                            <p class="text-sm text-gray-500">世田谷区 / 30代女性</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm">
+                    <div class="flex items-center gap-1 text-yellow-400 mb-4">
+                        ★★★★★
+                    </div>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        「引越し前の清掃をお願いしました。古いアパートでしたが、見違えるほどキレイになり、敷金もほぼ全額戻ってきました！」
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-primary-light rounded-full flex items-center justify-center text-primary font-bold">
+                            T.K
+                        </div>
+                        <div>
+                            <p class="font-medium">田中様</p>
+                            <p class="text-sm text-gray-500">渋谷区 / 20代男性</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonial 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm">
+                    <div class="flex items-center gap-1 text-yellow-400 mb-4">
+                        ★★★★★
+                    </div>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        「エアコンクリーニングをお願いしたら、嫌な臭いがなくなり、電気代も下がった気がします。毎年お願いしようと思います。」
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-primary-light rounded-full flex items-center justify-center text-primary font-bold">
+                            M.I
+                        </div>
+                        <div>
+                            <p class="font-medium">伊藤様</p>
+                            <p class="text-sm text-gray-500">港区 / 40代女性</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20">
+        <div class="max-w-3xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <p class="text-primary font-medium mb-2">FAQ</p>
+                <h2 class="text-3xl md:text-4xl font-bold">よくある質問</h2>
+            </div>
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors" onclick="toggleAccordion(this)">
+                        <span class="font-medium">作業中は在宅している必要がありますか？</span>
+                        <svg class="w-5 h-5 text-gray-400 transition-transform accordion-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <p class="px-6 pb-4 text-gray-600">
+                            いいえ、お立会いは不要です。事前に鍵をお預かりするか、キーボックスをご利用いただければ、お留守中でも作業可能です。もちろんご在宅でも問題ありません。
+                        </p>
+                    </div>
+                </div>
+                <!-- FAQ Item 2 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors" onclick="toggleAccordion(this)">
+                        <span class="font-medium">洗剤や道具は用意する必要がありますか？</span>
+                        <svg class="w-5 h-5 text-gray-400 transition-transform accordion-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <p class="px-6 pb-4 text-gray-600">
+                            いいえ、すべてこちらでご用意いたします。プロ仕様の洗剤・機材を使用しますので、お客様にご準備いただくものはございません。
+                        </p>
+                    </div>
+                </div>
+                <!-- FAQ Item 3 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors" onclick="toggleAccordion(this)">
+                        <span class="font-medium">キャンセル料はかかりますか？</span>
+                        <svg class="w-5 h-5 text-gray-400 transition-transform accordion-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <p class="px-6 pb-4 text-gray-600">
+                            作業日の2日前までのキャンセルは無料です。前日キャンセルは50%、当日キャンセルは100%のキャンセル料が発生いたします。日程変更は随時承っております。
+                        </p>
+                    </div>
+                </div>
+                <!-- FAQ Item 4 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50 transition-colors" onclick="toggleAccordion(this)">
+                        <span class="font-medium">対応エリアを教えてください</span>
+                        <svg class="w-5 h-5 text-gray-400 transition-transform accordion-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <p class="px-6 pb-4 text-gray-600">
+                            東京23区全域と、武蔵野市・三鷹市・調布市など一部多摩地域に対応しております。その他の地域もご相談ください。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="contact" class="py-20 bg-primary">
+        <div class="max-w-4xl mx-auto px-4 text-center text-white">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">
+                まずは無料でお見積り
+            </h2>
+            <p class="text-lg opacity-90 mb-8">
+                お電話またはフォームからお気軽にお問い合わせください
+            </p>
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-8">
+                <a href="tel:0120-000-000" class="flex items-center gap-3 bg-white text-primary px-8 py-4 rounded-full font-bold text-xl hover:shadow-lg transition-shadow">
+                    <span class="text-2xl">📞</span>
+                    0120-XXX-XXX
+                </a>
+                <div class="text-sm opacity-75">
+                    受付時間: 9:00〜19:00（年中無休）
+                </div>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#" class="bg-white/20 backdrop-blur-sm border-2 border-white text-white px-8 py-4 rounded-full font-medium hover:bg-white hover:text-primary transition-all">
+                    📧 メールで問い合わせ
+                </a>
+                <a href="#" class="bg-[#06C755] text-white px-8 py-4 rounded-full font-medium hover:opacity-90 transition-opacity">
+                    💬 LINEで問い合わせ
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-16">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <div class="md:col-span-2">
+                    <div class="text-2xl font-bold text-white mb-4">
+                        🏠 クリーンライフ東京
+                    </div>
+                    <p class="text-sm leading-relaxed mb-4">
+                        東京都内を中心に、ハウスクリーニングサービスを提供しています。<br>
+                        お客様の暮らしをより快適にするため、プロの技術でお手伝いいたします。
+                    </p>
+                    <div class="text-sm">
+                        <p>〒150-0001 東京都渋谷区神宮前1-2-3</p>
+                        <p>TEL: 0120-XXX-XXX</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">サービス</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-primary transition-colors">定期清掃</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">引越し清掃</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">エアコンクリーニング</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">オフィス清掃</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-4">会社情報</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-primary transition-colors">会社概要</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">採用情報</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">プライバシーポリシー</a></li>
+                        <li><a href="#" class="hover:text-primary transition-colors">特定商取引法に基づく表記</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center text-sm text-gray-500">
+                <p>© 2024 クリーンライフ東京 All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Accordion functionality
+        function toggleAccordion(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('.accordion-icon');
+
+            // Close all other accordions
+            document.querySelectorAll('.accordion-content').forEach(item => {
+                if (item !== content) {
+                    item.classList.remove('open');
+                }
+            });
+            document.querySelectorAll('.accordion-icon').forEach(item => {
+                if (item !== icon) {
+                    item.classList.remove('rotate-180');
+                }
+            });
+
+            // Toggle current accordion
+            content.classList.toggle('open');
+            icon.classList.toggle('rotate-180');
+        }
+
+        // Smooth scroll offset for fixed header
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

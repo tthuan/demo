@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page Portfolio | Thuan Pham</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .card:hover { transform: translateY(-8px); }
+        .card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-6xl mx-auto px-6 py-6">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-gray-900">Thuan Pham</h1>
+                <nav class="flex gap-6">
+                    <a href="#projects" class="text-gray-600 hover:text-gray-900 transition">Projects</a>
+                    <a href="#contact" class="text-gray-600 hover:text-gray-900 transition">Contact</a>
+                    <a href="https://github.com/tthuan" target="_blank" class="text-gray-600 hover:text-gray-900 transition">GitHub</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="bg-gradient-to-br from-indigo-600 to-purple-700 text-white py-20">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">Landing Page Portfolio</h2>
+            <p class="text-xl text-indigo-100 max-w-2xl mx-auto">
+                A collection of professional landing page designs built with modern web technologies.
+            </p>
+            <div class="mt-8 flex justify-center gap-4 flex-wrap">
+                <span class="px-4 py-2 bg-white/20 rounded-full text-sm">HTML5</span>
+                <span class="px-4 py-2 bg-white/20 rounded-full text-sm">CSS3</span>
+                <span class="px-4 py-2 bg-white/20 rounded-full text-sm">Tailwind CSS</span>
+                <span class="px-4 py-2 bg-white/20 rounded-full text-sm">JavaScript</span>
+                <span class="px-4 py-2 bg-white/20 rounded-full text-sm">Responsive Design</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="py-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <h3 class="text-3xl font-bold text-gray-900 mb-12 text-center">Projects</h3>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Project 1 -->
+                <div class="card bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center">
+                        <span class="text-white text-6xl">🏢</span>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold text-gray-900 mb-2">CleanPro Landing Page</h4>
+                        <p class="text-gray-600 mb-4">
+                            Corporate cleaning service landing page with modern gradient design,
+                            service showcase, pricing tables, and testimonials section.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">Tailwind CSS</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">Responsive</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">Japanese</span>
+                        </div>
+                        <a href="projects/cleanpro-landing/index.html"
+                           class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                            View Demo →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="card bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center">
+                        <span class="text-white text-6xl">🏠</span>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold text-gray-900 mb-2">CleanLife Tokyo</h4>
+                        <p class="text-gray-600 mb-4">
+                            Minimal and clean landing page for Tokyo-based cleaning service
+                            with smooth animations, accordion FAQ, and mobile-first design.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-sm">Animations</span>
+                            <span class="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-sm">Mobile-first</span>
+                            <span class="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-sm">Japanese</span>
+                        </div>
+                        <a href="projects/cleanlife-tokyo/index.html"
+                           class="inline-block bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition">
+                            View Demo →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="bg-gray-900 text-white py-16">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <h3 class="text-2xl font-bold mb-4">Get In Touch</h3>
+            <p class="text-gray-400 mb-6">Interested in working together? Let's connect!</p>
+            <div class="flex justify-center gap-6">
+                <a href="https://github.com/tthuan" target="_blank"
+                   class="px-6 py-3 bg-white text-gray-900 rounded-lg font-medium hover:bg-gray-100 transition">
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-6">
+        <div class="max-w-6xl mx-auto px-6 text-center text-gray-500">
+            <p>&copy; 2024 Thuan Pham. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
