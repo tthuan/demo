@@ -1,19 +1,47 @@
 "use client";
 
-import { useState } from "react";
-import { useParams, notFound } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useParams, notFound, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   businessConfigs,
-  lineConfigs,
   isValidBusinessType,
 } from "@/config/businesses";
 import { BusinessConfig, BusinessType } from "@/types";
 
+// LIFF types
+declare global {
+  interface Window {
+    liff: {
+      init: (config: { liffId: string }) => Promise<void>;
+      isLoggedIn: () => boolean;
+      login: (config?: { redirectUri?: string }) => void;
+      getProfile: () => Promise<{
+        userId: string;
+        displayName: string;
+        pictureUrl?: string;
+        statusMessage?: string;
+      }>;
+      isInClient: () => boolean;
+      closeWindow: () => void;
+      openWindow: (config: { url: string; external?: boolean }) => void;
+      sendMessages: (messages: Array<{ type: string; text: string }>) => Promise<void>;
+      ready: Promise<void>;
+    };
+  }
+}
+
 type LineView = "menu" | "booking" | "history" | "info";
+
+interface LiffProfile {
+  userId: string;
+  displayName: string;
+  pictureUrl?: string;
+}
 
 export default function LinePage() {
   const params = useParams();
+  const router = useRouter();
   const businessType = params.businessType as string;
 
   if (!isValidBusinessType(businessType)) {
@@ -21,15 +49,110 @@ export default function LinePage() {
   }
 
   const config: BusinessConfig = businessConfigs[businessType as BusinessType];
-  const lineConfig = lineConfigs[businessType as BusinessType];
   const { theme } = config;
 
+  // State
   const [currentView, setCurrentView] = useState<LineView>("menu");
   const [showLiffNotice, setShowLiffNotice] = useState(true);
+  const [liffInitialized, setLiffInitialized] = useState(false);
+  const [liffError, setLiffError] = useState<string | null>(null);
+  const [profile, setProfile] = useState<LiffProfile | null>(null);
+  const [isInLiff, setIsInLiff] = useState(false);
+
+  // Get LIFF ID from environment
+  const liffId = process.env[`NEXT_PUBLIC_LINE_${businessType.toUpperCase()}_LIFF_ID`] || "";
+
+  // Initialize LIFF
+  useEffect(() => {
+    const initLiff = async () => {
+      try {
+        // Load LIFF SDK
+        if (!window.liff) {
+          const script = document.createElement("script");
+          script.src = "https://static.line-scdn.net/liff/edge/2/sdk.js";
+          script.async = true;
+          document.body.appendChild(script);
+
+          await new Promise<void>((resolve, reject) => {
+            script.onload = () => resolve();
+            script.onerror = () => reject(new Error("Failed to load LIFF SDK"));
+          });
+        }
+
+        // Initialize LIFF if ID is configured
+        if (liffId) {
+          await window.liff.init({ liffId });
+          setLiffInitialized(true);
+          setIsInLiff(window.liff.isInClient());
+
+          // Get profile if logged in
+          if (window.liff.isLoggedIn()) {
+            const userProfile = await window.liff.getProfile();
+            setProfile(userProfile);
+          }
+        } else {
+          // Demo mode without real LIFF
+          setLiffInitialized(true);
+          setLiffError("demo");
+        }
+      } catch (error) {
+        console.error("LIFF init error:", error);
+        setLiffError("LIFF初期化エラー");
+        setLiffInitialized(true);
+      }
+    };
+
+    initLiff();
+  }, [liffId]);
+
+  // Handle LINE login
+  const handleLogin = () => {
+    if (window.liff && liffId) {
+      window.liff.login();
+    }
+  };
+
+  // Handle booking redirect
+  const handleBooking = () => {
+    const bookingUrl = `/demo/${businessType}`;
+
+    if (isInLiff && window.liff) {
+      // Open in LIFF browser
+      window.liff.openWindow({
+        url: window.location.origin + bookingUrl,
+        external: false,
+      });
+    } else {
+      router.push(bookingUrl);
+    }
+  };
 
   // Render LINE-style menu
   const renderMenu = () => (
     <div className="p-4 space-y-4 animate-fade-in">
+      {/* Profile card if logged in */}
+      {profile && (
+        <div className="bg-white rounded-2xl p-4 shadow-sm flex items-center gap-3">
+          {profile.pictureUrl ? (
+            <img
+              src={profile.pictureUrl}
+              alt={profile.displayName}
+              className="w-12 h-12 rounded-full"
+            />
+          ) : (
+            <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+              <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+          )}
+          <div>
+            <p className="font-medium text-gray-900">{profile.displayName}</p>
+            <p className="text-xs text-gray-500">LINEログイン中</p>
+          </div>
+        </div>
+      )}
+
       {/* Welcome message */}
       <div className="bg-white rounded-2xl p-4 shadow-sm">
         <div className="flex items-center gap-3 mb-3">
@@ -49,6 +172,20 @@ export default function LinePage() {
           下のメニューからご予約いただけます。
         </p>
       </div>
+
+      {/* Login button if not logged in and LIFF is configured */}
+      {!profile && liffId && !liffError && (
+        <button
+          onClick={handleLogin}
+          className="w-full bg-[#06C755] text-white py-3 rounded-xl font-medium
+                     flex items-center justify-center gap-2 hover:bg-[#05b34c] transition-colors"
+        >
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 5.82 2 10.5c0 2.55 1.26 4.84 3.24 6.41-.14.51-.9 3.08-.93 3.31 0 0-.02.16.08.22.1.06.22.03.22.03.29-.04 3.37-2.2 3.9-2.57.81.12 1.64.18 2.49.18 5.52 0 10-3.82 10-8.5S17.52 2 12 2z"/>
+          </svg>
+          LINEでログイン
+        </button>
+      )}
 
       {/* Rich Menu Buttons */}
       <div className="grid grid-cols-2 gap-3">
@@ -117,7 +254,7 @@ export default function LinePage() {
     </div>
   );
 
-  // Render booking redirect
+  // Render booking view
   const renderBooking = () => (
     <div className="p-4 animate-fade-in">
       <div className="bg-white rounded-2xl p-6 shadow-sm text-center">
@@ -137,18 +274,28 @@ export default function LinePage() {
         </div>
         <h3 className="text-lg font-bold text-gray-900 mb-2">予約ページを開きます</h3>
         <p className="text-sm text-gray-600 mb-6">
-          LIFFアプリ内で予約フォームが開きます。
-          <br />
-          LINEログイン情報が自動入力されます。
+          {profile ? (
+            <>
+              <span className="font-medium text-gray-900">{profile.displayName}</span>さんの
+              <br />
+              情報が自動入力されます。
+            </>
+          ) : (
+            <>
+              LIFFアプリ内で予約フォームが開きます。
+              <br />
+              LINEログインで情報が自動入力されます。
+            </>
+          )}
         </p>
-        <Link
-          href={`/demo/${businessType}`}
+        <button
+          onClick={handleBooking}
           className="block w-full py-3 rounded-xl text-white font-medium
                      transition-all hover:opacity-90 active:scale-[0.98]"
           style={{ backgroundColor: theme.primary }}
         >
           予約フォームを開く
-        </Link>
+        </button>
         <button
           onClick={() => setCurrentView("menu")}
           className="mt-3 text-sm text-gray-500 hover:text-gray-700"
@@ -157,13 +304,28 @@ export default function LinePage() {
         </button>
       </div>
 
-      {/* LIFF Features Notice */}
+      {/* LIFF Features */}
       <div className="mt-4 bg-blue-50 rounded-xl p-4">
-        <p className="text-xs text-blue-700 font-medium mb-2">LIFF連携機能</p>
+        <p className="text-xs text-blue-700 font-medium mb-2">LINE連携機能</p>
         <ul className="text-xs text-blue-600 space-y-1">
-          <li>• LINEプロフィールから名前を自動取得</li>
-          <li>• 予約完了後にLINEで通知</li>
-          <li>• 予約リマインダーを自動送信</li>
+          <li className="flex items-center gap-2">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            LINEプロフィールから名前を自動取得
+          </li>
+          <li className="flex items-center gap-2">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            予約完了後にLINEで通知
+          </li>
+          <li className="flex items-center gap-2">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            予約リマインダーを自動送信
+          </li>
         </ul>
       </div>
     </div>
@@ -182,7 +344,13 @@ export default function LinePage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
           </div>
-          <p className="text-gray-500 text-sm mb-4">予約履歴はありません</p>
+          {profile ? (
+            <p className="text-gray-500 text-sm mb-4">予約履歴はありません</p>
+          ) : (
+            <p className="text-gray-500 text-sm mb-4">
+              ログインすると予約履歴を<br />確認できます
+            </p>
+          )}
           <button
             onClick={() => setCurrentView("booking")}
             className="px-6 py-2 rounded-lg text-sm font-medium text-white"
@@ -244,6 +412,18 @@ export default function LinePage() {
     </div>
   );
 
+  // Loading state
+  if (!liffInitialized) {
+    return (
+      <div className="min-h-screen bg-[#7494C0] flex items-center justify-center">
+        <div className="text-center text-white">
+          <div className="w-10 h-10 border-4 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-sm">読み込み中...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#7494C0] flex flex-col">
       {/* LINE-style Header */}
@@ -255,7 +435,9 @@ export default function LinePage() {
         </Link>
         <div className="flex-1">
           <p className="font-medium text-sm">{config.name}</p>
-          <p className="text-xs text-white/70">{lineConfig.botId}</p>
+          <p className="text-xs text-white/70">
+            {isInLiff ? "LINEアプリ内" : "ブラウザモード"}
+          </p>
         </div>
         <div className="flex gap-2">
           <button className="p-2 hover:bg-white/10 rounded-full transition-colors">
@@ -273,13 +455,24 @@ export default function LinePage() {
 
       {/* LIFF Notice */}
       {showLiffNotice && (
-        <div className="bg-yellow-400 px-4 py-2 flex items-center justify-between">
-          <p className="text-xs text-yellow-900">
-            これはLINE LIFFアプリのデモ画面です
+        <div className={`px-4 py-2 flex items-center justify-between ${
+          liffError === "demo" ? "bg-yellow-400" : liffError ? "bg-red-400" : "bg-green-400"
+        }`}>
+          <p className={`text-xs ${
+            liffError === "demo" ? "text-yellow-900" : liffError ? "text-red-900" : "text-green-900"
+          }`}>
+            {liffError === "demo"
+              ? "デモモード - LIFF IDが未設定です"
+              : liffError
+              ? liffError
+              : isInLiff
+              ? "LINE LIFFアプリで開いています"
+              : "ブラウザで開いています（デモ）"
+            }
           </p>
           <button
             onClick={() => setShowLiffNotice(false)}
-            className="text-yellow-900 hover:text-yellow-800"
+            className={liffError === "demo" ? "text-yellow-900" : liffError ? "text-red-900" : "text-green-900"}
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
