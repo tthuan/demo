@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { businessConfigs, getAllBusinessTypes } from "@/config/businesses";
+import { businessConfigs, lineConfigs, getAllBusinessTypes } from "@/config/businesses";
 
 export default function HomePage() {
   const businessTypes = getAllBusinessTypes();
@@ -163,10 +163,10 @@ export default function HomePage() {
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex gap-2.5">
+                    <div className="flex gap-2 mb-3">
                       <Link
                         href={`/demo/${type}`}
-                        className="flex-1 py-2.5 px-4 text-center text-white rounded-xl text-sm font-medium
+                        className="flex-1 py-2.5 px-3 text-center text-white rounded-xl text-sm font-medium
                                    transition-all duration-200 hover:opacity-90 hover:shadow-lg active:scale-[0.98]"
                         style={{
                           backgroundColor: config.theme.primary,
@@ -177,7 +177,7 @@ export default function HomePage() {
                       </Link>
                       <Link
                         href={`/demo/${type}/admin`}
-                        className="flex-1 py-2.5 px-4 text-center rounded-xl text-sm font-medium border-2
+                        className="flex-1 py-2.5 px-3 text-center rounded-xl text-sm font-medium border-2
                                    transition-all duration-200 hover:bg-slate-50 active:scale-[0.98]"
                         style={{
                           borderColor: config.theme.primary,
@@ -187,6 +187,19 @@ export default function HomePage() {
                         管理画面
                       </Link>
                     </div>
+
+                    {/* LINE Button */}
+                    <Link
+                      href={`/demo/${type}/line`}
+                      className="flex items-center justify-center gap-2 w-full py-2.5 px-4
+                                 bg-[#06C755] hover:bg-[#05b34c] text-white rounded-xl text-sm font-medium
+                                 transition-all duration-200 active:scale-[0.98]"
+                    >
+                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 5.82 2 10.5c0 2.55 1.26 4.84 3.24 6.41-.14.51-.9 3.08-.93 3.31 0 0-.02.16.08.22.1.06.22.03.22.03.29-.04 3.37-2.2 3.9-2.57.81.12 1.64.18 2.49.18 5.52 0 10-3.82 10-8.5S17.52 2 12 2z"/>
+                      </svg>
+                      LINE予約
+                    </Link>
                   </div>
                 </div>
               );
@@ -194,7 +207,111 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Admin Login Info - New Section */}
+        {/* LINE Bot Demo Section */}
+        <section className="mb-14 animate-fade-in" style={{ animationDelay: "250ms" }}>
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold text-slate-700">
+              LINE連携デモ
+            </h2>
+            <p className="text-slate-400 text-sm mt-1">
+              LINEアプリから予約できるLIFF機能をお試しください
+            </p>
+          </div>
+
+          <div className="bg-[#06C755] rounded-2xl p-6 text-white">
+            <div className="flex flex-col md:flex-row md:items-center gap-6">
+              {/* LINE Info */}
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                    <svg className="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2C6.48 2 2 5.82 2 10.5c0 2.55 1.26 4.84 3.24 6.41-.14.51-.9 3.08-.93 3.31 0 0-.02.16.08.22.1.06.22.03.22.03.29-.04 3.37-2.2 3.9-2.57.81.12 1.64.18 2.49.18 5.52 0 10-3.82 10-8.5S17.52 2 12 2z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg">LINE Bot & LIFF</h3>
+                    <p className="text-white/70 text-sm">予約システム連携デモ</p>
+                  </div>
+                </div>
+                <p className="text-white/90 text-sm leading-relaxed mb-4">
+                  各業種のLINE公式アカウントを想定したLIFFアプリのデモです。
+                  LINEアプリ内で予約フローを体験できます。
+                </p>
+                <ul className="text-sm text-white/80 space-y-1.5">
+                  <li className="flex items-center gap-2">
+                    <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    リッチメニューから予約
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    LINEプロフィール自動入力
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    予約完了通知・リマインド
+                  </li>
+                </ul>
+              </div>
+
+              {/* QR Codes */}
+              <div className="flex gap-3 md:gap-4">
+                {businessTypes.map((type, typeIndex) => {
+                  const config = businessConfigs[type];
+                  // Deterministic QR pattern based on type index
+                  const qrPattern = [
+                    [1,1,1,0,1,1,1, 1,0,1,0,1,0,1, 1,1,1,0,1,1,1, 0,0,0,0,0,0,0, 1,0,1,1,0,1,0, 0,1,0,0,1,0,1, 1,1,1,0,1,1,1],
+                    [1,1,1,0,1,1,1, 0,1,0,1,0,1,0, 1,1,1,0,1,1,1, 0,0,0,0,0,0,0, 0,1,0,0,1,0,1, 1,0,1,1,0,1,0, 1,1,1,0,1,1,1],
+                    [1,1,1,0,1,1,1, 1,1,0,0,1,1,0, 1,1,1,0,1,1,1, 0,0,0,0,0,0,0, 1,1,0,1,1,0,0, 0,0,1,0,0,1,1, 1,1,1,0,1,1,1],
+                  ][typeIndex];
+                  return (
+                    <Link
+                      key={type}
+                      href={`/demo/${type}/line`}
+                      className="flex flex-col items-center gap-2 group"
+                    >
+                      <div className="bg-white rounded-xl p-3 shadow-lg group-hover:shadow-xl transition-shadow">
+                        {/* QR Code placeholder - in real app, generate actual QR */}
+                        <div className="w-20 h-20 md:w-24 md:h-24 bg-white rounded-lg flex items-center justify-center relative overflow-hidden">
+                          {/* QR Pattern */}
+                          <div className="absolute inset-2 grid grid-cols-7 gap-0.5">
+                            {qrPattern.map((filled, i) => (
+                              <div
+                                key={i}
+                                className={`rounded-sm ${
+                                  filled ? "bg-slate-800" : "bg-white"
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          {/* Center icon */}
+                          <div
+                            className="absolute w-8 h-8 rounded-lg flex items-center justify-center z-10"
+                            style={{ backgroundColor: config.theme.primary }}
+                          >
+                            <span className="text-sm">{config.icon}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <span className="text-xs text-white/90 font-medium text-center">
+                        {config.type === "salon" && "サロン"}
+                        {config.type === "clinic" && "クリニック"}
+                        {config.type === "restaurant" && "レストラン"}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Admin Login Info */}
         <section className="mb-14 animate-fade-in" style={{ animationDelay: "300ms" }}>
           <div className="bg-slate-800 rounded-2xl p-6 text-white">
             <div className="flex items-start gap-4">

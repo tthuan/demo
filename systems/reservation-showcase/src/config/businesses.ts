@@ -1,5 +1,21 @@
 import { BusinessConfig, BusinessType } from "@/types";
 
+// LINE Bot configurations for demo
+export const lineConfigs: Record<BusinessType, { botId: string; liffId: string }> = {
+  salon: {
+    botId: "@salon-hana-demo",
+    liffId: "demo-salon-liff",
+  },
+  clinic: {
+    botId: "@yamada-clinic-demo",
+    liffId: "demo-clinic-liff",
+  },
+  restaurant: {
+    botId: "@shunsai-demo",
+    liffId: "demo-restaurant-liff",
+  },
+};
+
 // All business configurations in one file for easy management
 export const businessConfigs: Record<BusinessType, BusinessConfig> = {
   salon: {
