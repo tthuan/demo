@@ -1,0 +1,153 @@
+reservation-demo/
+├── src/
+│   ├── components/
+│   │   ├── common/          # Reusable (Header, Footer, Button, Modal)
+│   │   ├── booking/         # Booking flow components
+│   │   └── admin/           # Admin panel components
+│   ├── lib/
+│   │   ├── supabase.ts      # DB client
+│   │   └── config.ts        # ★ Business config (easy to change)
+│   ├── app/
+│   │   ├── page.tsx         # Customer booking page
+│   │   └── admin/           # Admin dashboard
+│   └── styles/
+├── supabase/
+│   └── schema.sql           # Database schema
+└── README.md
+
+
+Create a reservation system MVP using Next.js 14 (App Router) + Tailwind CSS + Supabase.
+Business: 美容サロン「ビューティーサロン HANA」
+All UI text in Japanese. Follow Japanese business culture and UX patterns.
+
+=== JAPANESE BUSINESS CULTURE REQUIREMENTS ===
+- Formal but warm language (です/ます調)
+- Show trust signals: 「個人情報保護」「SSL暗号化通信」 badges in footer
+- Confirmation at every step (Japanese users expect多めの確認)
+- Always show 「戻る」 button (users fear making mistakes)
+- Phone number prominently displayed (older users prefer calling)
+- Include 「営業時間」 and 「定休日」 clearly
+- Polite error messages: 「恐れ入りますが、〜をご確認ください」
+- Success message with お辞儀 feeling: 「ご予約ありがとうございます」
+- Use Japanese date format: 2024年1月15日（月）
+- Time in 24h or with 午前/午後
+
+=== CONFIG FILE (src/lib/config.ts) ===
+Create a central config file for easy business customization:
+
+export const businessConfig = {
+  name: "ビューティーサロン HANA",
+  type: "salon", // salon | clinic | restaurant | hotel
+  phone: "03-1234-5678",
+  email: "info@salon-hana.jp",
+  address: "東京都渋谷区〇〇1-2-3",
+  hours: "10:00〜20:00",
+  closedDays: "毎週火曜日",
+  
+  services: [
+    { id: "cut", name: "カット", duration: 60, price: 4400 },
+    { id: "color", name: "カラー", duration: 90, price: 7700 },
+    { id: "perm", name: "パーマ", duration: 120, price: 8800 },
+    { id: "treatment", name: "トリートメント", duration: 30, price: 3300 },
+  ],
+  
+  timeSlots: ["10:00", "11:00", "12:00", "14:00", "15:00", "16:00", "17:00", "18:00"],
+  
+  bookingFlow: {
+    requirePhone: true,
+    requireEmail: true,
+    confirmationMethod: "email", // email | sms | both
+    cancellationPolicy: "前日までにご連絡ください",
+  },
+  
+  theme: {
+    primary: "#be185d", // Rose for salon
+    secondary: "#fce7f3",
+  }
+};
+
+=== CUSTOMER BOOKING FLOW (src/app/page.tsx) ===
+Step-by-step flow with progress indicator:
+
+Step 1: メニュー選択
+- Display services from config as cards
+- Show duration and price
+- Allow multiple service selection
+- Running total at bottom
+
+Step 2: 日時選択
+- Calendar component (current month + next month)
+- Gray out past dates and closed days
+- After date selection, show available time slots
+- Slots already booked should show 「×」
+
+Step 3: お客様情報入力
+- Form fields:
+  - お名前（必須）
+  - フリガナ（必須）- Important in Japan!
+  - 電話番号（必須）
+  - メールアドレス（必須）
+  - ご要望・備考（任意）
+- Validation with polite error messages
+- Show 「個人情報の取り扱いについて」 link
+
+Step 4: 確認画面
+- Show ALL details before final submission
+- Editable (「変更する」 buttons for each section)
+- Cancellation policy reminder
+- Final 「予約を確定する」 button (make it prominent but not scary)
+
+Step 5: 完了画面
+- 「ご予約ありがとうございます」
+- Reservation number (e.g., HANA-20240115-001)
+- Summary of booking
+- 「カレンダーに追加」 button (generate .ics)
+- 「ホームに戻る」 button
+
+=== ADMIN DASHBOARD (src/app/admin/page.tsx) ===
+Simple password protection (hardcoded for MVP: admin/admin123)
+
+Admin features:
+1. 今日の予約 - Today's bookings list
+2. 予約一覧 - All bookings with filters (date range, status)
+3. カレンダー表示 - Monthly view with booking counts
+4. 予約詳細 - Click to view/edit/cancel booking
+
+Table columns: 予約番号, 日時, お客様名, メニュー, ステータス, 操作
+Status badges: 確定（blue）, 完了（green）, キャンセル（gray）
+
+=== DATABASE SCHEMA (supabase/schema.sql) ===
+-- Reservations table
+create table reservations (
+  id uuid default gen_random_uuid() primary key,
+  reservation_number text unique not null,
+  customer_name text not null,
+  customer_name_kana text not null,
+  phone text not null,
+  email text not null,
+  date date not null,
+  time text not null,
+  services jsonb not null, -- [{id, name, duration, price}]
+  total_duration int not null,
+  total_price int not null,
+  notes text,
+  status text default '確定', -- 確定, 完了, キャンセル
+  created_at timestamp with time zone default now()
+);
+
+-- Index for date queries
+create index idx_reservations_date on reservations(date);
+
+=== UI/UX REQUIREMENTS ===
+- Mobile-first responsive design
+- Large touch targets for mobile (min 44px)
+- Loading states with subtle spinner
+- Smooth transitions between steps
+- Sticky header with business name and phone
+- Footer with trust badges and business info
+
+=== CODE QUALITY ===
+- TypeScript for type safety
+- Separate components for reusability
+- Comments in English for maintainability
+- Console logs for debugging (can remove later)
