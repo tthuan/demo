@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>おそうじ本舗 スマイル | 家族の時間、もっと大切に。</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10b981',
+                        'primary-dark': '#059669',
+                        secondary: '#fbbf24',
+                        'secondary-dark': '#f59e0b',
+                        cream: '#fefce8',
+                        'cream-dark': '#fef9c3',
+                    },
+                    fontFamily: {
+                        zen: ['Zen Maru Gothic', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            font-family: 'Zen Maru Gothic', sans-serif;
+        }
+
+        /* Scroll animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes bounce-gentle {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(3deg);
+            }
+        }
+
+        @keyframes pulse-soft {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+            }
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 0 20px 10px rgba(16, 185, 129, 0);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+            animation-play-state: paused;
+        }
+
+        .animate-on-scroll.animate {
+            animation-play-state: running;
+        }
+
+        .animate-left {
+            animation-name: fadeInLeft;
+        }
+
+        .animate-right {
+            animation-name: fadeInRight;
+        }
+
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+
+        .bounce-gentle {
+            animation: bounce-gentle 2s ease-in-out infinite;
+        }
+
+        .float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .pulse-soft {
+            animation: pulse-soft 2s ease-in-out infinite;
+        }
+
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #fefce8;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 10px;
+        }
+
+        /* FAQ accordion */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+
+        /* Decorative elements */
+        .sparkle::before {
+            content: '✨';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 1.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .bubble-bg {
+            background-image:
+                radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(251, 191, 36, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.05) 0%, transparent 30%);
+        }
+    </style>
+</head>
+<body class="bg-cream">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm shadow-sm z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                    <span class="text-white text-xl">🧹</span>
+                </div>
+                <div>
+                    <h1 class="text-primary font-bold text-lg leading-tight">おそうじ本舗</h1>
+                    <p class="text-secondary text-xs font-medium">スマイル</p>
+                </div>
+            </div>
+            <a href="#contact" class="bg-primary text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-primary-dark transition-colors">
+                無料相談 💬
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-24 pb-16 md:pt-32 md:pb-24 bubble-bg relative overflow-hidden">
+        <div class="absolute top-20 left-10 text-6xl opacity-20 float">🌿</div>
+        <div class="absolute bottom-20 right-10 text-5xl opacity-20 float" style="animation-delay: 1s;">✨</div>
+        <div class="absolute top-40 right-20 text-4xl opacity-15 float" style="animation-delay: 2s;">🏠</div>
+
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center">
+                <div class="inline-block bg-secondary/20 text-secondary-dark px-4 py-1 rounded-full text-sm font-medium mb-6 animate-on-scroll">
+                    地域密着・創業15年の信頼 🌟
+                </div>
+                <h2 class="text-3xl md:text-5xl font-bold text-gray-800 mb-4 animate-on-scroll delay-100">
+                    家族の時間、<br class="md:hidden">もっと大切に。
+                </h2>
+                <p class="text-xl md:text-2xl text-primary font-medium mb-8 animate-on-scroll delay-200">
+                    おそうじはプロにおまかせ！
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-on-scroll delay-300">
+                    <a href="#contact" class="bg-primary text-white px-8 py-4 rounded-2xl text-lg font-bold shadow-lg hover:bg-primary-dark transition-all hover:scale-105 pulse-soft">
+                        まずは気軽に相談♪ 💬
+                    </a>
+                    <a href="#services" class="text-primary font-medium flex items-center gap-2 hover:underline">
+                        サービスを見る
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hero Image Area -->
+            <div class="mt-12 relative animate-on-scroll delay-400">
+                <div class="bg-white rounded-3xl shadow-xl p-6 md:p-10 max-w-2xl mx-auto">
+                    <div class="flex items-center justify-center gap-4 md:gap-8">
+                        <div class="text-center">
+                            <div class="text-5xl md:text-6xl mb-2">👨‍👩‍👧‍👦</div>
+                            <p class="text-sm text-gray-600">ご家族</p>
+                        </div>
+                        <div class="text-3xl text-primary bounce-gentle">→</div>
+                        <div class="text-center">
+                            <div class="text-5xl md:text-6xl mb-2">😊</div>
+                            <p class="text-sm text-gray-600">笑顔の時間</p>
+                        </div>
+                        <div class="text-3xl text-primary bounce-gentle">+</div>
+                        <div class="text-center">
+                            <div class="text-5xl md:text-6xl mb-2">🏠✨</div>
+                            <p class="text-sm text-gray-600">ピカピカのお家</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pain Points Section -->
+    <section class="py-16 md:py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4 animate-on-scroll">
+                    こんなお悩み、ありませんか？
+                </h3>
+                <p class="text-gray-600 animate-on-scroll delay-100">一つでも当てはまったら、私たちにご相談ください 😊</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Pain Point 1 -->
+                <div class="bg-cream rounded-2xl p-6 hover-lift animate-on-scroll delay-100">
+                    <div class="text-5xl mb-4">💼</div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-3">共働きで時間がない</h4>
+                    <p class="text-gray-600 leading-relaxed">
+                        仕事から帰ってきてクタクタ…<br>
+                        週末くらいゆっくりしたいのに、掃除が溜まって休めない。
+                    </p>
+                    <div class="mt-4 text-primary text-sm font-medium">
+                        → 平日お留守中にピカピカに！
+                    </div>
+                </div>
+
+                <!-- Pain Point 2 -->
+                <div class="bg-cream rounded-2xl p-6 hover-lift animate-on-scroll delay-200">
+                    <div class="text-5xl mb-4">👶</div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-3">子育てで手が回らない</h4>
+                    <p class="text-gray-600 leading-relaxed">
+                        子どもの相手で精一杯…<br>
+                        気づいたらホコリだらけ。罪悪感を感じちゃう。
+                    </p>
+                    <div class="mt-4 text-primary text-sm font-medium">
+                        → お子様優先で大丈夫です！
+                    </div>
+                </div>
+
+                <!-- Pain Point 3 -->
+                <div class="bg-cream rounded-2xl p-6 hover-lift animate-on-scroll delay-300">
+                    <div class="text-5xl mb-4">👴👵</div>
+                    <h4 class="text-xl font-bold text-gray-800 mb-3">高齢の親の家が心配</h4>
+                    <p class="text-gray-600 leading-relaxed">
+                        離れて暮らす親の家が気になる…<br>
+                        でも自分では頻繁に行けない。
+                    </p>
+                    <div class="mt-4 text-primary text-sm font-medium">
+                        → 定期訪問で安心サポート！
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="py-16 md:py-24 bg-gradient-to-b from-cream to-white bubble-bg">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="text-center mb-12 animate-on-scroll">
+                <div class="inline-block text-5xl mb-4">🙌</div>
+                <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
+                    そんなお悩み、<br class="md:hidden">私たちにおまかせなんです！
+                </h3>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-xl p-6 md:p-10 animate-on-scroll delay-100">
+                <div class="space-y-6 text-gray-700 text-lg leading-relaxed">
+                    <p>
+                        「掃除しなきゃ…」って思いながらも、時間がなくて後回しにしちゃうこと、ありますよね。
+                    </p>
+                    <p>
+                        でも実は、<span class="text-primary font-bold">プロにお願いするって、ぜんぜん特別なことじゃない</span>んです！
+                    </p>
+                    <p>
+                        私たち<span class="font-bold">おそうじ本舗 スマイル</span>は、<br>
+                        「もっと気軽に頼めるお掃除サービス」を目指して、地域の皆さまに寄り添ってきました。
+                    </p>
+                    <div class="bg-cream rounded-2xl p-6 border-l-4 border-primary">
+                        <p class="font-bold text-primary mb-2">💡 ちょっとだけ考えてみてください</p>
+                        <p>
+                            掃除に使っていた時間を、お子様との遊びや、ご家族との団らん、趣味の時間に使えたら…<br>
+                            <span class="font-bold">きっと毎日がもっと楽しくなりますよね？</span>
+                        </p>
+                    </div>
+                    <p class="text-center text-xl font-bold text-primary">
+                        その「ゆとり」を、私たちがお届けします ✨
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-16 md:py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4 animate-on-scroll">
+                    サービスラインナップ 🧹
+                </h3>
+                <p class="text-gray-600 animate-on-scroll delay-100">お家のすみずみまで、ピカピカにします！</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Service 1 -->
+                <div class="bg-cream rounded-2xl p-6 text-center hover-lift animate-on-scroll delay-100 relative sparkle">
+                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-4xl">🍳</span>
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2">キッチンクリーニング</h4>
+                    <p class="text-sm text-gray-600 mb-3">油汚れもスッキリ！換気扇もお任せ</p>
+                    <span class="inline-block bg-primary/10 text-primary text-xs px-3 py-1 rounded-full">人気No.1</span>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="bg-cream rounded-2xl p-6 text-center hover-lift animate-on-scroll delay-200">
+                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-4xl">🛁</span>
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2">浴室クリーニング</h4>
+                    <p class="text-sm text-gray-600 mb-3">カビ・水垢をピカピカに</p>
+                    <span class="inline-block bg-secondary/20 text-secondary-dark text-xs px-3 py-1 rounded-full">おすすめ</span>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="bg-cream rounded-2xl p-6 text-center hover-lift animate-on-scroll delay-300">
+                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-4xl">❄️</span>
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2">エアコンクリーニング</h4>
+                    <p class="text-sm text-gray-600 mb-3">内部洗浄でキレイな空気</p>
+                    <span class="inline-block bg-blue-100 text-blue-600 text-xs px-3 py-1 rounded-full">季節限定割引</span>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="bg-cream rounded-2xl p-6 text-center hover-lift animate-on-scroll delay-400">
+                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-4xl">🏠</span>
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2">まるごとお掃除</h4>
+                    <p class="text-sm text-gray-600 mb-3">お家全体をトータルケア</p>
+                    <span class="inline-block bg-pink-100 text-pink-600 text-xs px-3 py-1 rounded-full">セット割引</span>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="bg-cream rounded-2xl p-6 text-center hover-lift animate-on-scroll delay-100">
+                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-4xl">🚽</span>
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2">トイレクリーニング</h4>
+                    <p class="text-sm text-gray-600">頑固な汚れも徹底除去</p>
+                </div>
+
+                <!-- Service 6 -->
+                <div class="bg-cream rounded-2xl p-6 text-center hover-lift animate-on-scroll delay-200">
+                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-4xl">🪟</span>
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2">窓・サッシ清掃</h4>
+                    <p class="text-sm text-gray-600">透明感のある窓に</p>
+                </div>
+
+                <!-- Service 7 -->
+                <div class="bg-cream rounded-2xl p-6 text-center hover-lift animate-on-scroll delay-300">
+                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-4xl">🧺</span>
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2">洗濯機クリーニング</h4>
+                    <p class="text-sm text-gray-600">見えない汚れを洗浄</p>
+                </div>
+
+                <!-- Service 8 -->
+                <div class="bg-cream rounded-2xl p-6 text-center hover-lift animate-on-scroll delay-400">
+                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-4xl">📅</span>
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2">定期お掃除サービス</h4>
+                    <p class="text-sm text-gray-600">週1回〜で楽チン</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Staff Section -->
+    <section class="py-16 md:py-24 bg-gradient-to-b from-white to-cream">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4 animate-on-scroll">
+                    安心のスタッフ 👨‍🔧👩‍🔧
+                </h3>
+                <p class="text-gray-600 animate-on-scroll delay-100">お客様の大切なお家だから、信頼できるスタッフをお届けします</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift animate-on-scroll delay-100">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl">📚</span>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-center mb-3">充実の研修制度</h4>
+                    <p class="text-gray-600 text-sm text-center leading-relaxed">
+                        100時間以上の研修を修了したスタッフのみがお伺いします。技術はもちろん、マナー研修も徹底しています。
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift animate-on-scroll delay-200">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl">🔒</span>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-center mb-3">身元確認済み</h4>
+                    <p class="text-gray-600 text-sm text-center leading-relaxed">
+                        全スタッフの身元確認を実施済み。損害保険にも加入しているので、万が一の時も安心です。
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift animate-on-scroll delay-300">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-3xl">👩</span>
+                    </div>
+                    <h4 class="font-bold text-gray-800 text-center mb-3">女性スタッフ指名可</h4>
+                    <p class="text-gray-600 text-sm text-center leading-relaxed">
+                        女性のお客様、一人暮らしの方も安心。女性スタッフの指名が可能です（事前にご相談ください）。
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-10 text-center animate-on-scroll delay-400">
+                <div class="inline-block bg-cream-dark rounded-2xl p-6">
+                    <p class="text-gray-700 font-medium">
+                        🌟 お客様満足度 <span class="text-primary text-2xl font-bold">98.5%</span>（2024年アンケート結果）
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="py-16 md:py-24 bg-cream">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4 animate-on-scroll">
+                    料金プラン 💰
+                </h3>
+                <p class="text-gray-600 animate-on-scroll delay-100">明朗会計！追加料金は一切ありません</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Starter Plan -->
+                <div class="bg-white rounded-2xl p-6 shadow-xl border-4 border-secondary relative hover-lift animate-on-scroll delay-100">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-secondary text-white px-4 py-1 rounded-full text-sm font-bold">
+                        まずはお試し ✨
+                    </div>
+                    <div class="text-center pt-4">
+                        <h4 class="font-bold text-gray-800 text-lg mb-2">初回限定プラン</h4>
+                        <div class="text-4xl font-bold text-primary mb-1">
+                            ¥5,980<span class="text-lg text-gray-500">〜</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-4">1箇所（税込）</p>
+                        <ul class="text-left space-y-2 mb-6">
+                            <li class="flex items-center gap-2 text-sm text-gray-600">
+                                <span class="text-primary">✓</span> 選べる1箇所
+                            </li>
+                            <li class="flex items-center gap-2 text-sm text-gray-600">
+                                <span class="text-primary">✓</span> 約2時間作業
+                            </li>
+                            <li class="flex items-center gap-2 text-sm text-gray-600">
+                                <span class="text-primary">✓</span> 満足保証付き
+                            </li>
+                        </ul>
+                        <a href="#contact" class="block bg-secondary text-white py-3 rounded-xl font-bold hover:bg-secondary-dark transition-colors">
+                            このプランで相談
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Standard Plan -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift animate-on-scroll delay-200">
+                    <div class="text-center">
+                        <h4 class="font-bold text-gray-800 text-lg mb-2">スタンダード</h4>
+                        <div class="text-4xl font-bold text-gray-800 mb-1">
+                            ¥12,800<span class="text-lg text-gray-500">〜</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-4">水回り2箇所（税込）</p>
+                        <ul class="text-left space-y-2 mb-6">
+                            <li class="flex items-center gap-2 text-sm text-gray-600">
+                                <span class="text-primary">✓</span> 水回り2箇所セット
+                            </li>
+                            <li class="flex items-center gap-2 text-sm text-gray-600">
+                                <span class="text-primary">✓</span> 約3〜4時間作業
+                            </li>
+                            <li class="flex items-center gap-2 text-sm text-gray-600">
+                                <span class="text-primary">✓</span> セット割引適用
+                            </li>
+                        </ul>
+                        <a href="#contact" class="block bg-primary text-white py-3 rounded-xl font-bold hover:bg-primary-dark transition-colors">
+                            このプランで相談
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Premium Plan -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift animate-on-scroll delay-300">
+                    <div class="text-center">
+                        <h4 class="font-bold text-gray-800 text-lg mb-2">まるごとプラン</h4>
+                        <div class="text-4xl font-bold text-gray-800 mb-1">
+                            ¥29,800<span class="text-lg text-gray-500">〜</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-4">水回り4箇所（税込）</p>
+                        <ul class="text-left space-y-2 mb-6">
+                            <li class="flex items-center gap-2 text-sm text-gray-600">
+                                <span class="text-primary">✓</span> 水回り全箇所
+                            </li>
+                            <li class="flex items-center gap-2 text-sm text-gray-600">
+                                <span class="text-primary">✓</span> 1日で完了
+                            </li>
+                            <li class="flex items-center gap-2 text-sm text-gray-600">
+                                <span class="text-primary">✓</span> 最大30%お得
+                            </li>
+                        </ul>
+                        <a href="#contact" class="block bg-primary text-white py-3 rounded-xl font-bold hover:bg-primary-dark transition-colors">
+                            このプランで相談
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 text-center text-gray-600 text-sm animate-on-scroll delay-400">
+                ※ 料金はお住まいの広さや汚れ具合により変動します。お見積もりは無料です！
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-16 md:py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4 animate-on-scroll">
+                    お客様の声 📣
+                </h3>
+                <p class="text-gray-600 animate-on-scroll delay-100">たくさんの嬉しいお声をいただいています！</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Testimonial 1 -->
+                <div class="bg-gradient-to-br from-cream to-white rounded-2xl p-6 shadow-lg hover-lift animate-on-scroll delay-100">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-pink-200 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">👩</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800">M.Kさん</p>
+                            <p class="text-xs text-gray-500">30代・共働きママ</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed">
+                        「週末が掃除で潰れてたのが、今は家族でお出かけできるように✨ 子どもも『お家きれい〜！』って喜んでます😊」
+                    </p>
+                    <div class="mt-4 text-secondary">★★★★★</div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-gradient-to-br from-cream to-white rounded-2xl p-6 shadow-lg hover-lift animate-on-scroll delay-200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-blue-200 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">👨</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800">T.Sさん</p>
+                            <p class="text-xs text-gray-500">40代・会社員</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed">
+                        「一人暮らしの母の家をお願いしてます。定期的に��子も教えてくれて、離れていても安心🏠」
+                    </p>
+                    <div class="mt-4 text-secondary">★★★★★</div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-gradient-to-br from-cream to-white rounded-2xl p-6 shadow-lg hover-lift animate-on-scroll delay-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-green-200 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">👩</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800">A.Yさん</p>
+                            <p class="text-xs text-gray-500">20代・一人暮らし</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed">
+                        「女性スタッフさんを指名できて安心でした💕 エアコンがこんなに汚れてたなんて…やってよかった！」
+                    </p>
+                    <div class="mt-4 text-secondary">★★★★★</div>
+                </div>
+
+                <!-- Testimonial 4 -->
+                <div class="bg-gradient-to-br from-cream to-white rounded-2xl p-6 shadow-lg hover-lift animate-on-scroll delay-100">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-yellow-200 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">👴</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800">H.Nさん</p>
+                            <p class="text-xs text-gray-500">70代・ご夫婦</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed">
+                        「高いところの掃除が難しくなって…若いスタッフさんが丁寧にやってくれて助かります��」
+                    </p>
+                    <div class="mt-4 text-secondary">★★★★★</div>
+                </div>
+
+                <!-- Testimonial 5 -->
+                <div class="bg-gradient-to-br from-cream to-white rounded-2xl p-6 shadow-lg hover-lift animate-on-scroll delay-200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-purple-200 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">👩</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800">R.Oさん</p>
+                            <p class="text-xs text-gray-500">30代・新米ママ</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed">
+                        「赤ちゃんがいて掃除どころじゃなかった時に依頼🍼 短時間でピカピカにしてくれて感動✨」
+                    </p>
+                    <div class="mt-4 text-secondary">★★★★★</div>
+                </div>
+
+                <!-- Testimonial 6 -->
+                <div class="bg-gradient-to-br from-cream to-white rounded-2xl p-6 shadow-lg hover-lift animate-on-scroll delay-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 bg-orange-200 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">👨</span>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800">K.Iさん</p>
+                            <p class="text-xs text-gray-500">50代・自営業</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 leading-relaxed">
+                        「仕事が忙しすぎて家がカオス状態に💦 スタッフさんが嫌な顔せず対応してくれて感謝です🙏」
+                    </p>
+                    <div class="mt-4 text-secondary">★★★★★</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-16 md:py-24 bg-cream">
+        <div class="max-w-3xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4 animate-on-scroll">
+                    よくある質問 ❓
+                </h3>
+                <p class="text-gray-600 animate-on-scroll delay-100">お気軽にご質問ください！</p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- FAQ 1 -->
+                <div class="faq-item bg-white rounded-2xl shadow-md overflow-hidden animate-on-scroll delay-100">
+                    <button class="w-full px-6 py-4 flex items-center justify-between text-left" onclick="toggleFaq(this)">
+                        <span class="font-bold text-gray-800">Q. どのくらい時間がかかりますか？</span>
+                        <span class="faq-icon text-primary">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-answer px-6 pb-4">
+                        <p class="text-gray-600">
+                            作業内容によって異なりますが、1箇所あたり約2〜3時間が目安です！事前にお見積もり時にご説明しますので、ご安心くださいね 😊
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="faq-item bg-white rounded-2xl shadow-md overflow-hidden animate-on-scroll delay-200">
+                    <button class="w-full px-6 py-4 flex items-center justify-between text-left" onclick="toggleFaq(this)">
+                        <span class="font-bold text-gray-800">Q. 不在時でもお願いできますか？</span>
+                        <span class="faq-icon text-primary">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-answer px-6 pb-4">
+                        <p class="text-gray-600">
+                            はい、大丈夫ですよ！鍵をお預かりして作業することも可能です。共働きのお客様にはこのパターンが人気なんです。鍵の管理は厳重に行っていますのでご安心を 🔑
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="faq-item bg-white rounded-2xl shadow-md overflow-hidden animate-on-scroll delay-300">
+                    <button class="w-full px-6 py-4 flex items-center justify-between text-left" onclick="toggleFaq(this)">
+                        <span class="font-bold text-gray-800">Q. ペットがいても大丈夫？</span>
+                        <span class="faq-icon text-primary">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-answer px-6 pb-4">
+                        <p class="text-gray-600">
+                            もちろん大丈夫です！🐕🐈 ペットに優しい洗剤を使用しています。ワンちゃん猫ちゃんのいるお家も安心してお任せください。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="faq-item bg-white rounded-2xl shadow-md overflow-hidden animate-on-scroll delay-400">
+                    <button class="w-full px-6 py-4 flex items-center justify-between text-left" onclick="toggleFaq(this)">
+                        <span class="font-bold text-gray-800">Q. キャンセル料はかかりますか？</span>
+                        <span class="faq-icon text-primary">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-answer px-6 pb-4">
+                        <p class="text-gray-600">
+                            前日までのご連絡なら、キャンセル料は一切かかりません！急な予定変更があっても大丈夫。お気軽にご連絡くださいね 📞
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ 5 -->
+                <div class="faq-item bg-white rounded-2xl shadow-md overflow-hidden animate-on-scroll delay-100">
+                    <button class="w-full px-6 py-4 flex items-center justify-between text-left" onclick="toggleFaq(this)">
+                        <span class="font-bold text-gray-800">Q. 支払い方法は？</span>
+                        <span class="faq-icon text-primary">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-answer px-6 pb-4">
+                        <p class="text-gray-600">
+                            現金、クレジットカード、各種電子マネーに対応しています！作業完了後のお支払いでOKです。請求書払いも対応可能ですよ 💳
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 md:py-24 bg-gradient-to-b from-cream to-primary/10">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4 animate-on-scroll">
+                    まずはお気軽にご相談ください 💬
+                </h3>
+                <p class="text-gray-600 animate-on-scroll delay-100">LINEでサクッと相談 or お電話でも OK！</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- LINE CTA -->
+                <div class="bg-white rounded-3xl p-8 shadow-xl text-center hover-lift animate-on-scroll delay-200">
+                    <div class="w-20 h-20 bg-[#06C755] rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-12 h-12 text-white" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
+                        </svg>
+                    </div>
+                    <h4 class="font-bold text-xl text-gray-800 mb-2">LINE友だち追加</h4>
+                    <p class="text-gray-600 text-sm mb-4">24時間いつでもメッセージOK！<br>お見積もり・ご質問お気軽に♪</p>
+                    <a href="#" class="inline-block bg-[#06C755] text-white px-8 py-4 rounded-2xl font-bold text-lg hover:opacity-90 transition-opacity">
+                        友だち追加する 📱
+                    </a>
+                    <p class="text-xs text-gray-500 mt-3">↑ タップで友だち追加画面へ</p>
+                </div>
+
+                <!-- Phone CTA -->
+                <div class="bg-white rounded-3xl p-8 shadow-xl text-center hover-lift animate-on-scroll delay-300">
+                    <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-4xl">📞</span>
+                    </div>
+                    <h4 class="font-bold text-xl text-gray-800 mb-2">お電話でのご相談</h4>
+                    <p class="text-gray-600 text-sm mb-4">受付時間: 9:00〜19:00<br>（年中無休）</p>
+                    <a href="tel:0120-XXX-XXX" class="inline-block bg-primary text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-primary-dark transition-colors">
+                        0120-XXX-XXX
+                    </a>
+                    <p class="text-xs text-gray-500 mt-3">↑ タップで電話をかける</p>
+                </div>
+            </div>
+
+            <div class="mt-10 text-center animate-on-scroll delay-400">
+                <div class="inline-flex items-center gap-2 bg-secondary/20 text-secondary-dark px-6 py-3 rounded-full">
+                    <span class="text-xl">🎁</span>
+                    <span class="font-medium">今月限定！LINE登録で初回500円OFF</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                            <span class="text-xl">🧹</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">おそうじ本舗</h4>
+                            <p class="text-secondary text-sm">スマイル</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        地域密着で15年。<br>
+                        皆さまの暮らしに笑顔をお届けします。
+                    </p>
+                </div>
+
+                <div>
+                    <h5 class="font-bold mb-4">サービス</h5>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li><a href="#services" class="hover:text-white transition-colors">キッチンクリーニング</a></li>
+                        <li><a href="#services" class="hover:text-white transition-colors">浴室クリーニング</a></li>
+                        <li><a href="#services" class="hover:text-white transition-colors">エアコンクリーニング</a></li>
+                        <li><a href="#services" class="hover:text-white transition-colors">定期お掃除サービス</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="font-bold mb-4">お問い合わせ</h5>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li>📞 0120-XXX-XXX</li>
+                        <li>📧 info@osouji-smile.example.com</li>
+                        <li>📍 〒XXX-XXXX 東京都○○区○○ X-X-X</li>
+                        <li>🕐 受付: 9:00〜19:00（年中無休）</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-500 text-sm">
+                <p>&copy; 2024 おそうじ本舗 スマイル All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll animation observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // FAQ toggle
+        function toggleFaq(button) {
+            const faqItem = button.closest('.faq-item');
+            const allFaqItems = document.querySelectorAll('.faq-item');
+
+            allFaqItems.forEach(item => {
+                if (item !== faqItem) {
+                    item.classList.remove('active');
+                }
+            });
+
+            faqItem.classList.toggle('active');
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
