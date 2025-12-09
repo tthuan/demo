@@ -50,6 +50,30 @@ export default function LoginForm({ config, onLogin }: LoginFormProps) {
           <p className="text-gray-600 text-sm">{config.name}</p>
         </div>
 
+        {/* Demo Hint Box */}
+        <div className="mb-6 bg-slate-50 border border-slate-200 rounded-xl p-4">
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-slate-200 flex items-center justify-center flex-shrink-0">
+              <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <p className="text-xs text-slate-500 mb-2">デモ用ログイン情報</p>
+              <div className="bg-white rounded-lg p-3 border border-slate-100">
+                <div className="flex items-center gap-2 text-sm mb-1">
+                  <span className="text-slate-400 w-20">ユーザー名</span>
+                  <code className="font-mono text-slate-700 bg-slate-100 px-2 py-0.5 rounded">admin</code>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-slate-400 w-20">パスワード</span>
+                  <code className="font-mono text-slate-700 bg-slate-100 px-2 py-0.5 rounded">admin123</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">ユーザー名</label>
@@ -84,10 +108,6 @@ export default function LoginForm({ config, onLogin }: LoginFormProps) {
             ログイン
           </Button>
         </form>
-
-        <div className="mt-6 text-center text-xs text-gray-400">
-          <p>MVP Demo: admin / admin123</p>
-        </div>
       </div>
     </div>
   );
