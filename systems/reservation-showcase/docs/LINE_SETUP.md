@@ -1,48 +1,48 @@
-# LINE Bot & LIFF 設定ガイド
+# LINE Bot & LIFF Setup Guide
 
-このドキュメントでは、LINE Botの設定方法を説明します。
+This document explains how to set up LINE Bot for the reservation system.
 
-## 概要
+## Overview
 
-各業種（salon, clinic, restaurant）に対して個別のLINE公式アカウントを作成し、Messaging APIとLIFFを設定します。
+Create individual LINE Official Accounts for each business type (salon, clinic, restaurant) and configure Messaging API and LIFF.
 
-## Step 1: LINE Developers コンソールでプロバイダー作成
+## Step 1: Create Provider in LINE Developers Console
 
-1. [LINE Developers](https://developers.line.biz/) にアクセス
-2. LINEアカウントでログイン
-3. 「プロバイダー」→「作成」をクリック
-4. プロバイダー名を入力（例：`予約システムデモ`）
+1. Go to [LINE Developers](https://developers.line.biz/)
+2. Log in with your LINE account
+3. Click "Providers" → "Create"
+4. Enter provider name (e.g., `Reservation System Demo`)
 
-## Step 2: Messaging API チャンネル作成（3つ作成）
+## Step 2: Create Messaging API Channels (Create 3)
 
-各業種ごとにチャンネルを作成します：
+Create a channel for each business type:
 
-### Salon用チャンネル
-1. プロバイダー内で「チャンネル作成」→「Messaging API」を選択
-2. 必要情報を入力：
-   - チャンネル名: `ビューティーサロン HANA`
-   - チャンネル説明: `美容サロンの予約受付`
-   - 大業種: `美容`
-   - 小業種: `美容室・ヘアサロン`
-3. 作成完了後、「Messaging API設定」タブへ
+### Salon Channel
+1. Inside provider, click "Create Channel" → Select "Messaging API"
+2. Enter required information:
+   - Channel name: `Beauty Salon HANA`
+   - Channel description: `Beauty salon reservation`
+   - Category: `Beauty`
+   - Subcategory: `Hair salon`
+3. After creation, go to "Messaging API" tab
 
-### Clinic用チャンネル
-- チャンネル名: `やまだ内科クリニック`
-- 大業種: `医療`
-- 小業種: `診療所・クリニック`
+### Clinic Channel
+- Channel name: `Yamada Internal Medicine Clinic`
+- Category: `Medical`
+- Subcategory: `Clinic`
 
-### Restaurant用チャンネル
-- チャンネル名: `和食ダイニング 旬彩`
-- 大業種: `飲食`
-- 小業種: `レストラン`
+### Restaurant Channel
+- Channel name: `Japanese Dining Shunsai`
+- Category: `Food & Beverage`
+- Subcategory: `Restaurant`
 
-## Step 3: チャンネルアクセストークン取得
+## Step 3: Get Channel Access Token
 
-各チャンネルで：
+For each channel:
 
-1. 「Messaging API設定」タブを開く
-2. 「チャンネルアクセストークン」セクションで「発行」をクリック
-3. トークンをコピーして保存
+1. Open "Messaging API" tab
+2. In "Channel access token" section, click "Issue"
+3. Copy and save the token
 
 ```
 LINE_SALON_CHANNEL_ACCESS_TOKEN=xxxxxxxx
@@ -50,12 +50,12 @@ LINE_CLINIC_CHANNEL_ACCESS_TOKEN=xxxxxxxx
 LINE_RESTAURANT_CHANNEL_ACCESS_TOKEN=xxxxxxxx
 ```
 
-## Step 4: チャンネルシークレット取得
+## Step 4: Get Channel Secret
 
-各チャンネルで：
+For each channel:
 
-1. 「チャンネル基本設定」タブを開く
-2. 「チャンネルシークレット」をコピー
+1. Open "Basic settings" tab
+2. Copy "Channel secret"
 
 ```
 LINE_SALON_CHANNEL_SECRET=xxxxxxxx
@@ -63,12 +63,12 @@ LINE_CLINIC_CHANNEL_SECRET=xxxxxxxx
 LINE_RESTAURANT_CHANNEL_SECRET=xxxxxxxx
 ```
 
-## Step 5: Webhook URL 設定
+## Step 5: Set Webhook URL
 
-各チャンネルで：
+For each channel:
 
-1. 「Messaging API設定」タブを開く
-2. 「Webhook URL」に以下を設定：
+1. Open "Messaging API" tab
+2. Set "Webhook URL" to:
 
 ```
 Salon:      https://your-domain.vercel.app/api/line/salon/webhook
@@ -76,26 +76,26 @@ Clinic:     https://your-domain.vercel.app/api/line/clinic/webhook
 Restaurant: https://your-domain.vercel.app/api/line/restaurant/webhook
 ```
 
-3. 「Webhookの利用」をONにする
-4. 「検証」ボタンでテスト（200 OKが返れば成功）
+3. Turn ON "Use webhook"
+4. Click "Verify" button to test (200 OK means success)
 
-## Step 6: LIFF アプリ作成
+## Step 6: Create LIFF App
 
-各チャンネルで：
+For each channel:
 
-1. 「LIFF」タブを開く
-2. 「追加」をクリック
-3. 以下を設定：
+1. Open "LIFF" tab
+2. Click "Add"
+3. Configure:
 
-| 項目 | 設定値 |
-|------|--------|
-| LIFFアプリ名 | `予約ページ` |
-| サイズ | `Full` |
-| エンドポイントURL | `https://your-domain.vercel.app/demo/salon/line` |
-| Scope | `profile` にチェック |
-| ボットリンク機能 | `On (Aggressive)` |
+| Item | Value |
+|------|-------|
+| LIFF app name | `Reservation Page` |
+| Size | `Full` |
+| Endpoint URL | `https://your-domain.vercel.app/demo/salon/line` |
+| Scope | Check `profile` |
+| Bot link feature | `On (Aggressive)` |
 
-4. 作成後、LIFF IDをコピー
+4. After creation, copy the LIFF ID
 
 ```
 NEXT_PUBLIC_LINE_SALON_LIFF_ID=1234567890-xxxxxxxx
@@ -103,54 +103,54 @@ NEXT_PUBLIC_LINE_CLINIC_LIFF_ID=1234567891-xxxxxxxx
 NEXT_PUBLIC_LINE_RESTAURANT_LIFF_ID=1234567892-xxxxxxxx
 ```
 
-## Step 7: 応答設定
+## Step 7: Response Settings
 
-各チャンネルで：
+For each channel:
 
-1. 「LINE公式アカウント設定」→「応答設定」をクリック
-2. 以下を設定：
+1. Click "LINE Official Account settings" → "Response settings"
+2. Configure:
 
-| 項目 | 設定値 |
-|------|--------|
-| 応答メッセージ | オフ |
-| あいさつメッセージ | オフ（Webhookで処理） |
-| Webhook | オン |
+| Item | Value |
+|------|-------|
+| Response message | OFF |
+| Greeting message | OFF (handled by Webhook) |
+| Webhook | ON |
 
-## Step 8: リッチメニュー作成（オプション）
+## Step 8: Create Rich Menu (Optional)
 
-LINE Official Account Managerで：
+In LINE Official Account Manager:
 
-1. [LINE Official Account Manager](https://manager.line.biz/) にアクセス
-2. 該当アカウントを選択
-3. 「リッチメニュー」→「作成」
+1. Go to [LINE Official Account Manager](https://manager.line.biz/)
+2. Select the account
+3. "Rich menu" → "Create"
 
-### レイアウト例（2x2グリッド）
+### Layout Example (2x2 Grid)
 
 ```
 ┌─────────────┬─────────────┐
-│   予約する   │  予約確認   │
+│   Reserve   │    Check    │
 │ (action=    │ (action=    │
 │  reserve)   │  check)     │
 ├─────────────┼─────────────┤
-│  店舗情報   │  電話する   │
+│ Store Info  │    Call     │
 │ (action=    │ (tel:       │
 │  info)      │  03-xxxx)   │
 └─────────────┴─────────────┘
 ```
 
-### アクション設定
+### Action Settings
 
-| ボタン | タイプ | 値 |
-|--------|--------|-----|
-| 予約する | ポストバック | `action=reserve` |
-| 予約確認 | ポストバック | `action=check` |
-| 店舗情報 | ポストバック | `action=info` |
-| 電話する | 電話 | `03-1234-5678` |
+| Button | Type | Value |
+|--------|------|-------|
+| Reserve | Postback | `action=reserve` |
+| Check Reservation | Postback | `action=check` |
+| Store Info | Postback | `action=info` |
+| Call | Phone | `03-1234-5678` |
 
-## Step 9: 環境変数設定（Vercel）
+## Step 9: Set Environment Variables (Vercel)
 
-1. Vercelプロジェクトの Settings → Environment Variables
-2. 以下を追加：
+1. Go to Vercel project Settings → Environment Variables
+2. Add the following:
 
 ```bash
 # Salon
@@ -175,44 +175,44 @@ NEXT_PUBLIC_LINE_RESTAURANT_LIFF_ID=xxxxx
 NEXT_PUBLIC_BASE_URL=https://your-domain.vercel.app
 ```
 
-3. 再デプロイ
+3. Redeploy
 
-## Step 10: 動作確認
+## Step 10: Test
 
-1. LINEアプリでQRコードをスキャン（LINE Official Account Managerから取得）
-2. 友だち追加
-3. ウェルカムメッセージが届くか確認
-4. 「予約」と入力して予約ボタンが表示されるか確認
-5. リッチメニューが表示されるか確認
+1. Scan QR code in LINE app (get from LINE Official Account Manager)
+2. Add as friend
+3. Check if welcome message arrives
+4. Type "予約" (reserve) and check if booking button appears
+5. Check if rich menu displays
 
-## トラブルシューティング
+## Troubleshooting
 
-### Webhook検証が失敗する
-- Vercelデプロイが完了しているか確認
-- URLが正しいか確認（末尾の`/webhook`を忘れずに）
-- 環境変数が正しく設定されているか確認
+### Webhook verification fails
+- Check if Vercel deployment is complete
+- Verify URL is correct (don't forget `/webhook` at the end)
+- Check if environment variables are set correctly
 
-### LIFFが初期化できない
-- LIFF IDが正しいか確認
-- エンドポイントURLが正しいか確認
-- HTTPSであることを確認
+### LIFF won't initialize
+- Verify LIFF ID is correct
+- Check endpoint URL is correct
+- Ensure using HTTPS
 
-### プロフィール取得できない
-- LIFFのScopeで`profile`にチェックが入っているか確認
-- ユーザーがログインしているか確認
+### Can't get profile
+- Check if `profile` is checked in LIFF Scope settings
+- Verify user is logged in
 
-## QRコード取得
+## Get QR Code
 
-LINE Official Account Managerの「友だち追加ガイド」からQRコードをダウンロードできます。
+Download QR codes from "Add friend guide" in LINE Official Account Manager.
 
-デモサイトでは、このQRコード画像を`/public/line-qr/`に配置して表示できます：
+For the demo site, place QR code images in `/public/line-qr/`:
 - `/public/line-qr/salon.png`
 - `/public/line-qr/clinic.png`
 - `/public/line-qr/restaurant.png`
 
-## 参考リンク
+## Reference Links
 
-- [LINE Developers ドキュメント](https://developers.line.biz/ja/docs/)
-- [Messaging API リファレンス](https://developers.line.biz/ja/reference/messaging-api/)
-- [LIFF v2 ドキュメント](https://developers.line.biz/ja/docs/liff/)
+- [LINE Developers Documentation](https://developers.line.biz/en/docs/)
+- [Messaging API Reference](https://developers.line.biz/en/reference/messaging-api/)
+- [LIFF v2 Documentation](https://developers.line.biz/en/docs/liff/)
 - [LINE Official Account Manager](https://manager.line.biz/)
